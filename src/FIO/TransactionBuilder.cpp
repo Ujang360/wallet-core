@@ -98,8 +98,6 @@ string TransactionBuilder::createRegisterFioAddress(const Address& address, cons
     action.includeExtra01BeforeData = false;
     action.actionDataSer = serData;
     action.auth.authArray.push_back(Authorization{actor, AuthrizationActive});
-    Data serAction;
-    action.serialize(serAction);
 
     Transaction tx;
     expirySetDefaultIfNeeded(expiryTime);
@@ -135,8 +133,6 @@ string TransactionBuilder::createAddPubAddress(const Address& address, const Pri
     action.includeExtra01BeforeData = true;
     action.actionDataSer = serData;
     action.auth.authArray.push_back(Authorization{actor, AuthrizationActive});
-    Data serAction;
-    action.serialize(serAction);
 
     Transaction tx;
     expirySetDefaultIfNeeded(expiryTime);
@@ -167,8 +163,6 @@ string TransactionBuilder::createTransfer(const Address& address, const PrivateK
     action.includeExtra01BeforeData = false;
     action.actionDataSer = serData;
     action.auth.authArray.push_back(Authorization{actor, AuthrizationActive});
-    Data serAction;
-    action.serialize(serAction);
 
     Transaction tx;
     expirySetDefaultIfNeeded(expiryTime);
@@ -199,8 +193,6 @@ string TransactionBuilder::createRenewFioAddress(const Address& address, const P
     action.includeExtra01BeforeData = false;
     action.actionDataSer = serData;
     action.auth.authArray.push_back(Authorization{actor, AuthrizationActive});
-    Data serAction;
-    action.serialize(serAction);
 
     Transaction tx;
     expirySetDefaultIfNeeded(expiryTime);
@@ -226,6 +218,7 @@ string TransactionBuilder::createNewFundsRequest(const Address& address, const P
     // serialize and encrypt
     Data serContent;
     newFundsContent.serialize(serContent);
+
     Address payerAddress(payerFioAddress);
     PublicKey payerPublicKey = payerAddress.publicKey();
     // encrypt
@@ -237,15 +230,13 @@ string TransactionBuilder::createNewFundsRequest(const Address& address, const P
     NewFundsRequestData nfData(payerFioName, payeeFioName, encodedEncryptedContent, fee, walletTpId, actor);
     Data serData;
     nfData.serialize(serData);
-    
+
     Action action;
     action.account = ContractPayRequest;
     action.name = apiName;
     action.includeExtra01BeforeData = false;
     action.actionDataSer = serData;
     action.auth.authArray.push_back(Authorization{actor, AuthrizationActive});
-    Data serAction;
-    action.serialize(serAction);
 
     Transaction tx;
     expirySetDefaultIfNeeded(expiryTime);
